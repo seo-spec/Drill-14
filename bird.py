@@ -1,6 +1,7 @@
 """새 이미지의 프레임 좌표와 비행 동작."""
 
 from pico2d import load_image
+import game_framework
 
 FRAME_COUNT = 14
 SHEET_COLUMNS = 5
@@ -37,7 +38,7 @@ class Bird:
         self.height = self.width * source_height / source_width
 
     def update(self):
-        pass
+        self.x += self.direction * FLY_SPEED_PPS * game_framework.frame_time
 
     def draw(self):
         self.image.clip_draw(
