@@ -4,6 +4,8 @@ from pico2d import load_image
 import game_framework
 
 FRAME_COUNT = 14
+FLAP_CYCLE_SECONDS = 0.6
+FLAP_FRAMES_PER_SECOND = FRAME_COUNT / FLAP_CYCLE_SECONDS
 SHEET_COLUMNS = 5
 SHEET_ROWS = 3
 PIXEL_PER_METER = 10.0 / 0.3
@@ -38,6 +40,8 @@ class Bird:
         self.height = self.width * source_height / source_width
 
     def update(self):
+        self.frame = (self.frame + FLAP_FRAMES_PER_SECOND *
+                      game_framework.frame_time) % FRAME_COUNT
         self.x += self.direction * FLY_SPEED_PPS * game_framework.frame_time
 
     def draw(self):
