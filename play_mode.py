@@ -25,6 +25,8 @@ def handle_events():
 def init():
     global boy
 
+    # 재진입 시 이전 장면의 새를 포함한 객체가 중복되지 않게 한다.
+    game_world.clear()
     boy = Boy()
     game_world.add_oject(boy)
 
