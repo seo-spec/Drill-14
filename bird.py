@@ -12,6 +12,9 @@ PIXEL_PER_METER = 10.0 / 0.3
 FLY_SPEED_KMPH = 18.0
 FLY_SPEED_MPS = FLY_SPEED_KMPH * 1000.0 / 3600.0
 FLY_SPEED_PPS = FLY_SPEED_MPS * PIXEL_PER_METER
+FLOCK_SIZE = 10
+MIN_FLIGHT_Y = 350
+MAX_FLIGHT_Y = 500
 
 
 def frame_rect(frame, image_width, image_height):
@@ -59,3 +62,17 @@ class Bird:
             *frame_rect(self.frame, self.image.w, self.image.h),
             0, 'h' if self.direction < 0 else '',
             self.x, self.y, self.width, self.height)
+
+
+def create_flock():
+    """시작 위치, 방향, 날갯짓 위상을 분산한 새 10마리를 만든다."""
+    available_width = max(0, get_canvas_width() - Bird.width)
+    return [
+        Bird(
+            Bird.width / 2 + available_width * (index + 0.5) / FLOCK_SIZE,
+            MIN_FLIGHT_Y + (MAX_FLIGHT_Y - MIN_FLIGHT_Y) * index / (FLOCK_SIZE - 1),
+            direction=1 if index % 2 == 0 else -1,
+            frame=FRAME_COUNT * index / FLOCK_SIZE,
+        )
+        for index in range(FLOCK_SIZE)
+    ]
