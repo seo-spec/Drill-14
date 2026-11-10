@@ -55,6 +55,7 @@ class Bird:
         self.direction = 1 if path < span else -1
 
     def draw(self):
-        self.image.clip_draw(
+        self.image.clip_composite_draw(
             *frame_rect(self.frame, self.image.w, self.image.h),
+            0, 'h' if self.direction < 0 else '',
             self.x, self.y, self.width, self.height)
