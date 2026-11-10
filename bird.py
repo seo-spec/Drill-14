@@ -1,6 +1,6 @@
 """새 이미지의 프레임 좌표와 비행 동작."""
 
-from pico2d import load_image
+from pico2d import load_image, get_canvas_width
 import game_framework
 
 FRAME_COUNT = 14
@@ -42,7 +42,17 @@ class Bird:
     def update(self):
         self.frame = (self.frame + FLAP_FRAMES_PER_SECOND *
                       game_framework.frame_time) % FRAME_COUNT
-        self.x += self.direction * FLY_SPEED_PPS * game_framework.frame_time
+        left = self.width / 2
+        span = get_canvas_width() - self.width
+        if span <= 0:
+            self.x = get_canvas_width() / 2
+            return
+        # 왕복 경로를 펼쳐 계산하면 큰 시간 간격에도 경계 안에 머문다.
+        offset = self.x - left
+        path = offset if self.direction > 0 else 2 * span - offset
+        path = (path + FLY_SPEED_PPS * game_framework.frame_time) % (2 * span)
+        self.x = left + (path if path < span else 2 * span - path)
+        self.direction = 1 if path < span else -1
 
     def draw(self):
         self.image.clip_draw(
