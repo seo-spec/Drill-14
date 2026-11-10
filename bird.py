@@ -5,6 +5,10 @@ from pico2d import load_image
 FRAME_COUNT = 14
 SHEET_COLUMNS = 5
 SHEET_ROWS = 3
+PIXEL_PER_METER = 10.0 / 0.3
+FLY_SPEED_KMPH = 18.0
+FLY_SPEED_MPS = FLY_SPEED_KMPH * 1000.0 / 3600.0
+FLY_SPEED_PPS = FLY_SPEED_MPS * PIXEL_PER_METER
 
 
 def frame_rect(frame, image_width, image_height):
